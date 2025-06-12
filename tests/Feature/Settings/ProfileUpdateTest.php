@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Settings\Profile;
+use App\Http\Livewire\Settings\Profile;
 use App\Models\User;
 use Livewire\Livewire;
 
