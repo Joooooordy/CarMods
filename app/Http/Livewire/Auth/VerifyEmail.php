@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace App\Http\Livewire\Auth;
 
-use App\Livewire\Actions\Logout;
+use App\Http\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;

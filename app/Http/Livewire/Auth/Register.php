@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace App\Http\Livewire\Auth;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
