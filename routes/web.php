@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\AddCarController;
+
 use App\Http\Livewire\Settings\Appearance;
 use App\Http\Livewire\Settings\Password;
 use App\Http\Livewire\Settings\Profile;
+use App\Http\Livewire\Admin\Users;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,6 +20,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+
+    Route::get('settings/admin-panel', Users::class)->name('settings.admin_panel');
 });
 
 require __DIR__.'/auth.php';

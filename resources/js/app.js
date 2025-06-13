@@ -1,6 +1,9 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 import Inputmask from "inputmask";
+import pikaday from 'pikaday';
+window.Pikaday = pikaday;
+import '/vendor/yungifez/artisan-ui/dist/artisan.js'
 
 // Insert helper
 function insertInString(index, str, insertStr) {
