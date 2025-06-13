@@ -1,18 +1,27 @@
 <?php
+
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+
 if (!function_exists('avatar_url')) {
     /**
      * Haal de volledige URL op van een avatar-bestand.
      *
-     * @param \App\Models\User|null $user
+     * @param User|null $user
      * @return string
      */
-    function avatar_url(?\App\Models\User $user): string
+    function avatar_url(?User $user): string
     {
         if (!$user || !$user->avatar) {
-            return asset('images/default-avatar.png'); // fallback
+            return '';
         }
 
-        return asset("storage/avatars/{$user->id}/{$user->avatar}");
-    }
+        $path = "public/avatars/{$user->id}/{$user->avatar}";
 
+        if (Storage::exists($path)) {
+            return asset("storage/avatars/{$user->id}/{$user->avatar}");
+        }
+
+        return asset('img/empty-user.svg');
+    }
 }

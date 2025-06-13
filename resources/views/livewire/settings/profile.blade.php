@@ -8,7 +8,7 @@
                 <div class="flex items-center space-x-6">
                     <!-- Avatar -->
                     <x-file wire:model="avatarFile" accept="image/png, image/jpeg" class="cursor-pointer">
-                        <img src="{{avatar_url(auth()->user()) ?? asset('img/empty-user.svg') }}"
+                        <img src="{{ avatar_url(auth()->user()) ?: asset('img/empty-user.svg') }}"
                              class="w-32 h-32 rounded-full border-4 border-indigo-500 shadow-lg object-cover transition-transform duration-300 hover:scale-105"
                              alt="profile picture" />
                     </x-file>

@@ -42,7 +42,7 @@
     <flux:dropdown position="top" align="end">
 
         <flux:profile circle name="{{auth()->user()->name}}"
-                      avatar="{{avatar_url(auth()->user()) ?? '' }}"/>
+                      avatar="{{avatar_url(auth()->user()) ?: '' }}"/>
 
 
         <flux:navmenu class="max-w-[12rem]">
