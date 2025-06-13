@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('avatar_url')) {
@@ -16,9 +17,9 @@ if (!function_exists('avatar_url')) {
             return '';
         }
 
-        $path = "public/avatars/{$user->id}/{$user->avatar}";
+        $path = "avatars/{$user->id}/{$user->avatar}";
 
-        if (Storage::exists($path)) {
+        if (Storage::disk('public')->exists($path)) {
             return asset("storage/avatars/{$user->id}/{$user->avatar}");
         }
 
