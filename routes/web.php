@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\VehicleController;
+use App\Http\Livewire\AddCar;
 use App\Http\Livewire\Settings\Appearance;
 use App\Http\Livewire\Settings\Password;
 use App\Http\Livewire\Settings\Profile;
@@ -13,7 +15,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::view('home', 'dashboard')->middleware(['verified'])->name('dashboard');
-    Route::view('voeg-auto-toe', 'add_car')->name('add-car');
+    Route::get('/voeg-auto-toe', AddCar::class)->name('add-car');
+    Route::get('/kenteken/{vehicle}', [VehicleController::class, 'show'])->name('car.show');
 
     Route::redirect('settings', 'settings/profile');
 

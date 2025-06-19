@@ -14,9 +14,9 @@
     </a>
 
     <flux:navbar class="-mb-px max-lg:hidden">
-        <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
+        <flux:navbar.item icon="plus-circle" :href="route('add-car')" :current="request()->routeIs('add-car')"
                           wire:navigate>
-            {{ __('Home') }}
+            {{ __('Add Car') }}
         </flux:navbar.item>
     </flux:navbar>
 
