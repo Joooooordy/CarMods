@@ -73,3 +73,17 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.icon {
+    padding-left: 45px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    min-height: 32px;
+}

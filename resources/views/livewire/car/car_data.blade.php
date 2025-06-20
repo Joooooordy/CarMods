@@ -2,12 +2,14 @@
     <div class="max-w-4xl mx-auto mt-12 px-4">
         @if($vehicleData)
             {{-- Header --}}
-            <div class="bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-8 space-y-6 border border-gray-200 dark:border-gray-700">
+            <div
+                class="bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-8 space-y-6 border border-gray-200 dark:border-gray-700">
                 <h1 class="text-4xl font-bold text-gray-800 tracking-wide pb-8">
                     {{ $vehicleData['merk'] ?? 'N/A' }} {{ $vehicleData['handelsbenaming'] ?? '' }}
                 </h1>
 
-                <div class="flex overflow-hidden rounded-lg border border-gray-400 dark:border-gray-600 bg-amber-400 dark:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500 transition">
+                <div
+                    class="flex overflow-hidden rounded-lg border border-gray-400 dark:border-gray-600 bg-amber-400 dark:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500 transition">
                     <div class="bg-blue-600 px-4 flex items-center justify-center text-white font-bold text-xl w-16">
                         NL
                     </div>
@@ -32,108 +34,134 @@
                             Zoek Kenteken
                         </span>
                         <span wire:loading>
-                           <flux:icon.loading class="w-5 h-5 text-white animate-spin" />
+                           <flux:icon.loading class="w-5 h-5 text-white animate-spin"/>
                         </span>
                     </button>
                 </div>
             </div>
 
             {{-- Snelle Check --}}
-            <div class="mt-10 bg-black text-white rounded-2xl p-6 shadow-xl">
-                <h2 class="text-xl font-semibold mb-4">Snelle check</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+            <div class="mt-10 dark:bg-black bg-white dark:text-white text-black rounded-2xl p-6 shadow-xl">
+                <h2 class="text-xl font-semibold">Snelle check</h2>
+                <p class="mb-4 pb-3 border-b-1 border-black">Waarde-indicatie, onderhoud en meer</p>
 
-                    <div class="flex flex-col items-start">
-                        <span class="text-gray-400">Nieuwwaarde</span>
-                        <span class="text-lg font-medium">€{{ number_format($vehicleData['catalogusprijs']) ?? 'N/A' }}</span> {{-- hardcoded voor nu --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 text-sm">
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/pricegraph/405E7A.svg')">
+                        <span class="block text-gray-400">Waarde-indicatie</span>
+                        <span
+                            class="text-lg font-medium">€{{ number_format($vehicleData['catalogusprijs'], 0, ',', '.') ?? 'N/A' }}</span>
                     </div>
 
-                    <div class="flex flex-col items-start">
-                        <span class="text-gray-400">Datum APK</span>
+
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/garage/405E7A.svg')">
+                        <span class="block text-gray-400">Datum APK</span>
                         <span class="text-lg font-medium">
                 {{ \Carbon\Carbon::parse($vehicleData['vervaldatum_apk_dt'] ?? '')->format('d-m-Y') ?? 'N/A' }}
-                        </span>
+            </span>
                     </div>
 
-                    <div class="flex flex-col items-start">
-                        <span class="text-gray-400">Topsnelheid</span>
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/cars/405E7A.svg')">
+                        <span class="block text-gray-400">Aantal Cilinders</span>
+                        <span class="text-lg font-medium">{{ $vehicleData['aantal_cilinders'] ?? 'N/A' }}</span>
+                    </div>
+
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/speed/405E7A.svg')">
+                        <span class="block text-gray-400">Topsnelheid</span>
                         <span class="text-lg font-medium">{{ $vehicleData['maximale_constructiesnelheid'] ?? 'N/A' }} km/u</span>
                     </div>
 
-                    <div class="flex flex-col items-start">
-                        <span class="text-gray-400">Taxi?</span>
-                        <span class="text-lg font-medium">{{ $vehicleData['taxi_indicator'] ?? 'N/A' }}</span>
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/owners/405E7A.svg')">
+                        <span class="block text-gray-400">Aantal eigenaren</span>
+                        <span class="text-lg font-medium">{{ $vehicleData['aantal_eigenaren'] ?? 'N/A' }}</span>
                     </div>
 
-                    <div class="flex flex-col items-start">
-                        <span class="text-gray-400">Bouwjaar</span>
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/taxi/405E7A.svg')">
+                        <span class="block text-gray-400">Taxi?</span>
+                        <span class="text-lg font-medium">{{ $vehicleData['taxi_indicator'] ?? 'Nee' }}</span>
+                    </div>
+
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/calendar/405E7A.svg')">
+                        <span class="block text-gray-400">Bouwjaar</span>
                         <span class="text-lg font-medium">
                 {{ \Carbon\Carbon::parse($vehicleData['datum_eerste_toelating'] ?? '')->format('Y') ?? 'N/A' }}
             </span>
                     </div>
 
-                    <div class="flex flex-col items-start">
-                        <span class="text-gray-400">Geïmporteerd?</span>
-                        <span
-                            class="text-lg font-medium">{{ $vehicleData['import_indicator'] ?? 'Nee' }}</span> {{-- "Nee" fallback --}}
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/netherlands/405E7A.svg')">
+                        <span class="block text-gray-400">Geïmporteerd?</span>
+                        <span class="text-lg font-medium">{{ $vehicleData['import_indicator'] ?? 'Nee' }}</span>
                     </div>
 
-                    <div class="flex flex-col items-start">
-                        <span class="text-gray-400">Eerste toelating nationaal</span>
+                    <div class="icon" data-darkbgimage="url('https://finnik.nl/svg/netherlands/405E7A.svg')">
+                        <span class="block text-gray-400">Eerste toelating nationaal</span>
                         <span class="text-lg font-medium">
                 {{ \Carbon\Carbon::parse($vehicleData['datum_eerste_tenaamstelling_in_nederland_dt'] ?? '')->format('d-m-Y') ?? 'N/A' }}
             </span>
                     </div>
-
                 </div>
             </div>
 
 
-            {{-- Voertuiggegevens --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white shadow-xl rounded-2xl p-8 border border-gray-200 mt-8">
-                <div>
-                    <p class="text-sm text-gray-500 uppercase font-semibold mb-1">Merk</p>
-                    <p class="text-lg text-gray-800">{{ $vehicleData['merk'] ?? 'N/A' }}</p>
-                </div>
 
-                <div>
-                    <p class="text-sm text-gray-500 uppercase font-semibold mb-1">Model</p>
-                    <p class="text-lg text-gray-800">{{ $vehicleData['handelsbenaming'] ?? 'N/A' }}</p>
-                </div>
+            {{-- Alle voertuiggegevens --}}
+            <div class="mt-10 bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Alle voertuiggegevens</h2>
+                <p class="mb-8 pb-3 border-b-1 border-black">Vermogen, snelheid, gewicht en meer</p>
 
-                <div>
-                    <p class="text-sm text-gray-500 uppercase font-semibold mb-1">Inrichting</p>
-                    <p class="text-lg text-gray-800">{{ $vehicleData['inrichting'] ?? 'N/A' }}</p>
-                </div>
+                <dl class="grid grid-cols-1 sm:grid-cols-1 gap-x-12 gap-y-6 text-md">
+                    @foreach($vehicleData as $key => $value)
+                        @php
+                            // Sla API-velden over
+                            if (Str::startsWith($key, ['api_', 'registratie'])) continue;
+                            if (Str::endsWith($key, ['_dt'])) continue;
 
-                <div>
-                    <p class="text-sm text-gray-500 uppercase font-semibold mb-1">Kleur</p>
-                    <p class="text-lg text-gray-800">{{ $vehicleData['eerste_kleur'] ?? 'N/A' }}</p>
-                </div>
+                            // Omschrijving netjes formatteren
+                            $label = Str::of($key)->replace('_', ' ')->title();
 
-                <div>
-                    <p class="text-sm text-gray-500 uppercase font-semibold mb-1">Aantal deuren</p>
-                    <p class="text-lg text-gray-800">{{ $vehicleData['aantal_deuren'] ?? 'N/A' }}</p>
-                </div>
+                            // Check of het een datumveld is
+                            $isDate = Str::endsWith($key, ['_dt', '_datum']) || Str::startsWith($key, ['datum_', 'vervaldatum_']);
+                            $formattedValue = $value;
 
-                <div>
-                    <p class="text-sm text-gray-500 uppercase font-semibold mb-1">Voertuigsoort</p>
-                    <p class="text-lg text-gray-800">{{ $vehicleData['voertuigsoort'] ?? 'N/A' }}</p>
-                </div>
+                            // Format als datum indien nodig
+                            if ($isDate && $value) {
+                                try {
+                                    $formattedValue = \Carbon\Carbon::parse($value)->format('d-m-Y');
+                                } catch (Exception $e) {}
+                            }
 
-                <div>
-                    <p class="text-sm text-gray-500 uppercase font-semibold mb-1">Bouwjaar</p>
-                    <p class="text-lg text-gray-800">
-                        {{ \Carbon\Carbon::parse($vehicleData['datum_eerste_toelating'] ?? '')->format('Y') ?? 'N/A' }}
-                    </p>
-                </div>
+                            // Format als numeriek indien mogelijk
+                            elseif (is_numeric($value)) {
+                                // Valuta-velden
+                                if (Str::contains($key, ['catalogusprijs', 'bpm'])) {
+                                    $formattedValue = '€ ' . number_format($value, 0, '.', ',');
+                                }
+                                // Massa/inhoud in kg/cm³/liter etc.
+                                elseif (Str::contains($key, ['massa', 'inhoud', 'gewicht'])) {
+                                    $formattedValue = number_format($value, 0, ',', ',') . ' kg';
+                                }
+                                // Snelheid
+                                elseif (Str::contains($key, ['snelheid'])) {
+                                    $formattedValue = number_format($value, 0, ',', ',') . ' km/u';
+                                }
+                                // Vermogen
+                                elseif (Str::contains($key, ['vermogen'])) {
+                                    $formattedValue = number_format($value, 0, ',', ',') . ' kW';
+                                }
+                                // Standaard getallen
+                                else {
+                                    $formattedValue = number_format($value, 0, ',', ',');
+                                }
+                            }
+                        @endphp
 
-                <div>
-                    <p class="text-sm text-gray-500 uppercase font-semibold mb-1">APK tot</p>
-                    <p class="text-lg text-gray-800">
-                        {{ \Carbon\Carbon::parse($vehicleData['vervaldatum_apk_dt'] ?? '')->format('d-m-Y') ?? 'N/A' }}
-                    </p>
-                </div>
+                        <div class="flex justify-between pb-2">
+                            <dt class="text-gray-600 dark:text-gray-400 font-medium">{{ $label }}</dt>
+                            <dd class="text-gray-900 dark:text-white text-left font-semibold break-words">
+                                {{ $formattedValue ?: 'N/A' }}
+                            </dd>
+                        </div>
+                    @endforeach
+                </dl>
             </div>
         @else
             {{-- Geen data --}}
@@ -143,3 +171,20 @@
         @endif
     </div>
 </x-layouts.app>
+<script>
+    const icons = document.querySelectorAll('.icon[data-darkbgimage]');
+    icons.forEach(el => {
+        const bg = el.getAttribute('data-darkbgimage');
+        if (bg) {
+            const url = bg.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
+            const img = new Image();
+            img.onload = () => {
+                el.style.backgroundImage = bg;
+            };
+            img.onerror = () => {
+                console.warn('Could not load', bg);
+            };
+            img.src = url;
+        }
+    });
+</script>
