@@ -10,7 +10,7 @@
                     <x-file wire:model="avatarFile" accept="image/png, image/jpeg" class="cursor-pointer">
                         <img src="{{ avatar_url(auth()->user()) ?: asset('img/empty-user.svg') }}"
                              class="w-32 h-32 rounded-full border-4 border-indigo-500 shadow-lg object-cover transition-transform duration-300 hover:scale-105"
-                             alt="profile picture" />
+                             alt="profile picture"/>
                     </x-file>
 
                     <!-- Label -->
@@ -18,8 +18,6 @@
         {{ __('Click the image to choose a new avatar!') }}
     </span>
                 </div>
-
-
 
                 <!-- Persoonlijke gegevens -->
                 <div class="md:col-span-2">
@@ -35,10 +33,10 @@
                                         autocomplete="email"
                                         class="rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition"/>
                         </div>
-                    {{-- Birthdate --}}
-{{--                        <div class="grid grid-cols-1 md:grid-cols-3">--}}
-{{--                            <x-aui::date-picker class="w-96" mode="single" />--}}
-{{--                        </div>--}}
+                        {{-- Birthdate --}}
+                        {{--                        <div class="grid grid-cols-1 md:grid-cols-3">--}}
+                        {{--                            <x-aui::date-picker class="w-96" mode="single" />--}}
+                        {{--                        </div>--}}
                     </flux:fieldset>
                 </div>
             </div>
@@ -96,7 +94,7 @@
             </flux:fieldset>
 
             <!-- Opslaan knop -->
-            <div class="flex justify-end">
+            <div class="flex justify-center pt-8">
                 <flux:button variant="primary" type="submit" class="px-8 py-3 text-lg font-semibold rounded-lg shadow-md
                     bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 focus:outline-none
                     text-white transition duration-300 ease-in-out">
@@ -104,11 +102,12 @@
                 </flux:button>
             </div>
 
+            <hr class="border-2 border-r-2">
+            <livewire:settings.delete-user-form/>
+
             <x-action-message class="me-3 text-green-600 font-medium" on="profile-updated">
                 {{ __('Saved.') }}
             </x-action-message>
         </form>
-
-        <livewire:settings.delete-user-form/>
     </x-settings.admin-layout>
 </section>

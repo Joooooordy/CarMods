@@ -40,8 +40,25 @@ function formatAsLicensePlate(n) {
     return n;
 }
 
+$(function() {
+    $(function() {
+        $('#toggleVehicleDataBtn').click(function() {
+            const content = $('#vehicleDataContent');
+            content.slideToggle(200);
+
+            $(this).toggleClass('active');
+
+            if ($(this).hasClass('active')) {
+                $(this).text('Verberg gegevens');
+            } else {
+                $(this).text('Laad meer gegevens...');
+            }
+        });
+    });
+});
+
 // Keydown handler: for backspace/del, do manual removal
-$(document).on('keydown', '#licensePlateInput, #licensePlateInputCarData', function (e) {
+$(document).on('keydown', '#licensePlateInput', function (e) {
     const key = e.which || e.keyCode || e.charCode;
     if (key === 8 || key === 46) {
         e.preventDefault();
@@ -53,33 +70,11 @@ $(document).on('keydown', '#licensePlateInput, #licensePlateInputCarData', funct
 });
 
 // Input handler: format on every input
-$(document).on('input', '#licensePlateInput, #licensePlateInputCarData', function () {
+$(document).on('input', '#licensePlateInput', function () {
     const $this = $(this);
     const formatted = formatAsLicensePlate($this.val());
     if ($this.val() !== formatted) {
         $this.val(formatted);
-    }
-});
-
-$(document).on('click', '#licensePlateInputCarData', function () {
-    const $this = $(this);
-    const search = '#search_button_car_data';
-
-    const formatted = formatAsLicensePlate($this.val());
-
-    if ($this.val() !== formatted) {
-        $this.val(formatted);
-    }
-
-    $(search).fadeIn(200);
-});
-
-$(document).on('blur', '#licensePlateInputCarData', function () {
-    const search = '#search_button_car_data';
-    const field = $(this);
-
-    if (field.val() === '') {
-        $(search).fadeOut(200);
     }
 });
 

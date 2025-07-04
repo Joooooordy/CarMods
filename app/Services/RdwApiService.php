@@ -26,4 +26,18 @@ class RdwApiService
 
         return null;
     }
+
+    public function getFuelType(string $kenteken): ?string
+    {
+        $response = Http::get('https://opendata.rdw.nl/resource/8ys7-d773.json', [
+            'kenteken' => strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $kenteken)),
+        ]);
+
+        if ($response->successful() && !empty($response[0])) {
+            return $response[0]['brandstof_omschrijving'] ?? null;
+        }
+
+        return null;
+    }
+
 }
