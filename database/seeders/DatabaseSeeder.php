@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Address;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -59,5 +60,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $testUser->update(['address_id' => $address->id]);
         $testUser->assignRole('admin');
+
+        Product::factory()->count(100)->create();
     }
 }

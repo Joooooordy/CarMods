@@ -10,17 +10,21 @@
 
             <!-- Titel en ondertitel -->
             <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-                Welkom bij <span class="text-yellow-500">CarMods</span>
+                Welcome to <span class="text-yellow-500">CarMods</span>
             </h1>
             <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                Dé plek voor autoliefhebbers om hun build te delen, mods bij te houden en inspiratie op te doen.
+                THE place for car enthousiasts to share their build, keep track of their mods and shop for parts.
             </p>
 
             <!-- CTA knop -->
-            <div class="mt-8">
+            <div class="mt-8 flex gap-5 justify-center">
                 <a href="{{ route('add-car') }}"
-                   class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-xl shadow transition duration-200">
-                    Voeg je auto toe
+                   class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-6 py-3 rounded-xl shadow transition duration-200">
+                   Find Your Car
+                </a>
+                <a href="{{ route('shop') }}"
+                   class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-6 py-3 rounded-xl shadow transition duration-200">
+                    Go To The Shop
                 </a>
             </div>
         </div>

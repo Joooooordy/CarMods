@@ -87,3 +87,9 @@ select:focus[data-flux-control] {
     background-position: left center;
     min-height: 32px;
 }
+
+.bordered-image {
+    border-radius: 0.5rem;
+    padding: 2px;
+    background-color: white;
+}

@@ -7,7 +7,13 @@ import pikaday from 'pikaday';
 window.Pikaday = pikaday;
 import '/vendor/yungifez/artisan-ui/dist/artisan.js'
 import Typewriter from 'typewriter-effect/dist/core';
+import Swal from "sweetalert2";
 
+// ***********************************
+// **
+// * LICENSE PLATE FUNCTIONS
+// **
+// ***********************************
 
 // Insert helper
 function insertInString(index, str, insertStr) {
@@ -40,23 +46,6 @@ function formatAsLicensePlate(n) {
     return n;
 }
 
-$(function() {
-    $(function() {
-        $('#toggleVehicleDataBtn').click(function() {
-            const content = $('#vehicleDataContent');
-            content.slideToggle(200);
-
-            $(this).toggleClass('active');
-
-            if ($(this).hasClass('active')) {
-                $(this).text('Verberg gegevens');
-            } else {
-                $(this).text('Laad meer gegevens...');
-            }
-        });
-    });
-});
-
 // Keydown handler: for backspace/del, do manual removal
 $(document).on('keydown', '#licensePlateInput', function (e) {
     const key = e.which || e.keyCode || e.charCode;
@@ -79,9 +68,10 @@ $(document).on('input', '#licensePlateInput', function () {
 });
 
 const licenseplate = '#licensePlateInput';
-const typewriter = new Typewriter(licenseplate, {
-    loop: true
-});
+const el = document.querySelector('#licensePlateInput');
+if (el) {
+    new Typewriter(el, {loop: true});
+}
 
 const app = {
     typewriter: function () {
@@ -143,11 +133,82 @@ const app = {
             text: ["1-ABC-23", "08-CMD-1", "HT-260-X", "8-ZTP-72", "3-ZRH-53", "XX-123-X"]
         });
     },
-    init: function() {
+    init: function () {
         app.typewriter();
     }
 };
 app.init();
+
+// ***********************************
+// **
+// * TOGGLE BUTTON VEHICLEDATA ON SHOWCARDATA PAGE
+// **
+// ***********************************
+$(function () {
+    $(function () {
+        $('#toggleVehicleDataBtn').click(function () {
+            const content = $('#vehicleDataContent');
+            content.slideToggle(200);
+
+            $(this).toggleClass('active');
+
+            if ($(this).hasClass('active')) {
+                $(this).text('Verberg gegevens');
+            } else {
+                $(this).text('Laad meer gegevens...');
+            }
+        });
+    });
+});
+
+// ***********************************
+// **
+// * SHOP MESSAGES
+// **
+// ***********************************
+$(document).ready(function () {
+    window.addEventListener('product-added', function (event) {
+        console.log('Product toegevoegd event:', event.detail);
+        Swal.fire({
+            title: 'Succesfully added to cart',
+            text: `${event.detail[0].name} is succesfully added to your shopping cart.`,
+            imageUrl: "/img/car-driving-32.gif",
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: "car-driving-32.gif",
+            customClass: {
+                image: 'bordered-image',
+                confirmButton: 'bg-yellow-400 text-black hover:bg-yellow-500 px-4 py-2 rounded-md'
+            },
+            width: 600,
+            heightAuto: true,
+            confirmButtonColor: "#ecc94b",
+            cancelButtonColor: "#3b3b3b",
+            showCloseButton: true,
+            showCancelButton: true,
+            confirmButtonText: `
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                  </svg>
+                  <span>To your cart</span>
+                </div>
+              `,
+            cancelButtonText: `
+                Continue shopping`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href = '/cart';
+            }
+        });
+    });
+});
+
+
+
+
+
 
 
 

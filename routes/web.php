@@ -3,15 +3,21 @@
 
 use App\Http\Controllers\VehicleController;
 use App\Http\Livewire\AddCar;
+use App\Http\Livewire\Admin\Products;
+use App\Http\Livewire\Cart;
 use App\Http\Livewire\Settings\Appearance;
 use App\Http\Livewire\Settings\Password;
 use App\Http\Livewire\Settings\Profile;
 use App\Http\Livewire\Admin\Users;
+use App\Http\Livewire\Shop;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('/shop', Shop::class)->name('shop');
+Route::get('/cart', Cart::class)->name('cart');
 
 Route::middleware(['auth'])->group(function () {
     Route::view('home', 'dashboard')->middleware(['verified'])->name('dashboard');
@@ -24,7 +30,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 
-    Route::get('settings/admin-panel', Users::class)->name('settings.admin_panel');
+    Route::get('settings/admin-user-panel', Users::class)->name('settings.admin_user_panel');
+    Route::get('settings/admin-product-panel', Products::class)->name('settings.admin_product_panel');
 });
 
 require __DIR__.'/auth.php';

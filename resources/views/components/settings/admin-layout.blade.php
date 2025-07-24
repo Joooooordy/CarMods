@@ -5,7 +5,8 @@
             <flux:navlist.item :href="route('settings.password')" wire:navigate>{{ __('Password') }}</flux:navlist.item>
             <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
             @role('admin')
-            <flux:navlist.item :href="route('settings.admin_panel')" wire:navigate>{{ __('Admin Panel') }}</flux:navlist.item>
+            <flux:navlist.item :href="route('settings.admin_user_panel')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
+            <flux:navlist.item :href="route('settings.admin_product_panel')" wire:navigate>{{ __('Products') }}</flux:navlist.item>
             @endrole
         </flux:navlist>
     </div>

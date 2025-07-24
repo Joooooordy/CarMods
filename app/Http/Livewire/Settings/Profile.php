@@ -98,7 +98,7 @@ class Profile extends Component
             $filename = 'avatar' . $random_string . $extension;
 
             // Sla bestand op in storage/app/public/avatars/{user_id}/filename
-            $path = $this->avatarFile->storeAs("avatars/{$userId}", $filename, 'public');
+            $path = $this->avatarFile->storeAs("{$userId}/avatars", $filename, 'public');
 
             // Alleen bestandsnaam opslaan in DB
             $user->avatar = $filename;

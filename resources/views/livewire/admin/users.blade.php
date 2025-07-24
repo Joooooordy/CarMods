@@ -1,17 +1,17 @@
 <div>
     @include('partials.settings-heading')
 
-    <x-settings.admin-layout :heading="__('Admin Panel')" :subheading="__('Zie gebruikersdata en pas dit aan naar wens.')">
+    <x-settings.admin-layout :heading="__('Admin Panel')" :subheading="__('View users and add or edit their data.')">
         <div class="overflow-x-auto p-4">
             <table class="table-auto w-full border-collapse border border-gray-300 text-sm">
                 <thead class="bg-gray-100">
                 <tr>
                     <th class="border px-4 py-2">ID</th>
-                    <th class="border px-4 py-2">Naam</th>
+                    <th class="border px-4 py-2">Name</th>
                     <th class="border px-4 py-2">Email</th>
-                    <th class="border px-4 py-2">Rollen</th>
-                    <th class="border px-4 py-2">Permissies</th>
-                    <th class="border px-4 py-2">Gemaakt op</th>
+                    <th class="border px-4 py-2">Roles</th>
+                    <th class="border px-4 py-2">Permissions</th>
+                    <th class="border px-4 py-2">Created On</th>
                 </tr>
                 </thead>
                 <tbody>

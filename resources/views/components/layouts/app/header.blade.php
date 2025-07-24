@@ -20,6 +20,14 @@
         </flux:navbar.item>
     </flux:navbar>
 
+    <flux:navbar class="-mb-px max-lg:hidden">
+        <flux:navbar.item icon="shopping-cart" :href="route('shop')" :current="request()->routeIs('shop')"
+                          wire:navigate>
+            {{ __('Shop') }}
+        </flux:navbar.item>
+    </flux:navbar>
+
+
     <flux:spacer/>
 
     <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
@@ -36,13 +44,16 @@
                 label="Documentation"
             />
         </flux:tooltip>
+
+        @livewire('cart-badge')
+
     </flux:navbar>
 
     <!-- Desktop User Menu -->
     <flux:dropdown position="top" align="end">
 
         <flux:profile circle name="{{auth()->user()->name}}"
-                      avatar="{{avatar_url(auth()->user()) ?: '' }}"/>
+                      avatar="{{avatar_url(auth()->user()->id) ?: '' }}" class="cursor-pointer"/>
 
 
         <flux:navmenu class="max-w-[12rem]">
@@ -54,17 +65,10 @@
             <flux:navmenu.item :href="route('settings.profile')" icon="user" class="text-zinc-800 dark:text-white" wire:navigate>
                 {{ __('Account') }}
             </flux:navmenu.item>
-            @role('admin')
-            <flux:menu.radio.group>
-                <flux:menu.item :href="route('settings.admin_panel')" icon="cog" class="text-zinc-800 dark:text-white" wire:navigate>
-                    {{ __('Admin Panel') }}
-                </flux:menu.item>
-            </flux:menu.radio.group>
             <flux:menu.separator/>
-            @endrole
             <form method="POST" action="{{ route('logout') }}" class="w-full">
                 @csrf
-                <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
+                <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="text-zinc-800 dark:text-white cursor-pointer">
                     {{ __('Log Out') }}
                 </flux:menu.item>
             </form>
