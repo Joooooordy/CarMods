@@ -1,4 +1,6 @@
 import $ from 'jquery';
+import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
+import flatpickr from "flatpickr";
 
 window.$ = window.jQuery = $;
 import Inputmask from "inputmask";

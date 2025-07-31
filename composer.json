@@ -10,13 +10,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "blade-ui-kit/blade-ui-kit": "^0.7.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.1",
         "livewire/livewire": "^3.6",
         "livewire/volt": "^1.7.0",
+        "power-components/livewire-powergrid": "^6.5",
         "robsontenorio/mary": "^2.4",
         "spatie/laravel-permission": "^6.19",
+        "wireui/wireui": "^2.4",
         "yungifez/artisan-ui": "^0.0.5"
     },
     "require-dev": {
