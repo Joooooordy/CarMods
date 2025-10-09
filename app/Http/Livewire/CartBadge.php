@@ -21,6 +21,6 @@ class CartBadge extends Component
 
     public function render()
     {
-        return view('livewire.cart-badge');
+        return view('livewire.cart.cart-badge');
     }
 }

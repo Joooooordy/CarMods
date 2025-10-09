@@ -40,7 +40,8 @@
                                     wire:change="updateQuantity({{ $item['id'] }}, $event.target.value)"
                                     class="mt-1 block w-20 rounded-md border-2 border-black shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300">
                                 @for ($i = 1; $i <= 10; $i++)
-                                    <option value="{{ $i }}" {{ $i == $item['quantity'] ? 'selected' : '' }}>{{ $i }}</option>
+                                    <option
+                                        value="{{ $i }}" {{ $i == $item['quantity'] ? 'selected' : '' }}>{{ $i }}</option>
                                 @endfor
                             </select>
 
@@ -152,10 +153,10 @@
                         class="font-bold text-xl">€ {{ number_format(collect($cart)->sum(fn($i) => $i['price'] * $i['quantity']), 2, ',', '.') }}</span>
                 </div>
 
-                <button
-                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-md font-semibold mb-4 cursor-pointer">
-                    Go to checkout
-                </button>
+                <a href="{{ route('checkout.billing') }}" class="block w-full max-w-md mx-auto bg-yellow-500 hover:bg-yellow-600 text-white text-center py-3 px-6 rounded-lg font-semibold shadow-md transition duration-200 ease-in-out mb-4">
+                    Go to Checkout
+                </a>
+
 
                 <div class="flex justify-center gap-4 py-4">
                     <svg class="w-12 h-12">

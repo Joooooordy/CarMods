@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\RdwApiService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,8 +12,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(\App\Services\RdwApiService::class, function ($app) {
-            return new \App\Services\RdwApiService();
+        $this->app->singleton(RdwApiService::class, function ($app) {
+            return new RdwApiService();
         });
     }
 
