@@ -1,23 +1,82 @@
-/.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
+# Laravel & PHP
 /vendor
+/node_modules
+composer.phar
 .env
 .env.backup
 .env.production
-.phpactor.json
 .phpunit.result.cache
+.phpunit.cache
+auth.json
+
+# Laravel specific
+/public/hot
+/public/build
+/public/storage
+/storage/*.key
+/storage/pail
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/auth.json
-/.fleet
+
+# Laravel logs and cache
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+/storage/logs/*
+!/storage/logs/.gitignore
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+
+# IDEs and editors
 /.idea
-/.nova
 /.vscode
+/.fleet
+/.nova
 /.zed
+.phpactor.json
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.yarn-integrity
+.npm
+
+# Build artifacts
+/public/build
+/public/mix-manifest.json
+/public/hot
+
+# Testing
+/.phpunit.cache
+.phpunit.result.cache
+coverage/
+.coverage
+
+# Misc
+*.log
+.env.*.php
+.env.php
