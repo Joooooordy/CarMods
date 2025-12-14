@@ -183,7 +183,6 @@ icons.forEach(el => {
 // ***********************************
 $(document).ready(function () {
     window.addEventListener('product-added', function (event) {
-        console.log('Product toegevoegd event:', event.detail);
         Swal.fire({
             title: 'Succesfully added to cart',
             text: `${event.detail[0].name} is succesfully added to your shopping cart.`,
@@ -218,6 +217,26 @@ $(document).ready(function () {
             }
         });
     });
+
+    window.addEventListener('vehicle-added', function (event) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Added!',
+            text: 'The vehicle was added to your account.',
+            showConfirmButton: true,
+            confirmButtonColor: "#ecc94b",
+            confirmButtonText: `
+                <div class="flex items-center gap-2 text-black">
+                  <span>To your vehicles</span>
+                </div>
+              `,
+        }).then(result => {
+            if (result.isConfirmed) {
+                window.location.href = '/settings/vehicles'
+            }
+        });
+    })
+
 });
 
 
