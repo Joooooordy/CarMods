@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'birthdate' => fake()->date(),
             'bank_account' => fake()->iban(),
             'email' => fake()->unique()->safeEmail(),
+            'phone_number' => fake()->phoneNumber(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),

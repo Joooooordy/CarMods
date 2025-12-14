@@ -4,8 +4,12 @@ namespace App\Livewire\Checkout;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Payment as PaymentModel;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\Features\SupportRedirects\Redirector;
 use Random\RandomException;
 
 class Payment extends Component
@@ -112,9 +116,9 @@ class Payment extends Component
     {
         return match ($method) {
             'cc' => [
-                'cc_number' => 'required|numeric',
+                'cc_number' => 'required|string',
                 'cc_expiry' => 'required',
-                'cc_cvv' => 'required|numeric',
+                'cc_cvv' => 'required|integer',
             ],
             'iDeal' => [
                 'bank' => 'required',
@@ -144,9 +148,7 @@ class Payment extends Component
 
     private function cartTotal(): float
     {
-        return (float)collect($this->cart)->sum(
-            fn(array $item) => (float)($item['price'] * $item['quantity'] - $item['discount_amount'])
-        );
+        return $this->cartSubtotal() + $this->shippingCost - $this->discountAmount;
     }
 
     /**
@@ -199,21 +201,54 @@ class Payment extends Component
      * Ensures the input complies with the validation rules specific to the selected
      * payment method. If validation passes, a success message is set in the session.
      *
-     * @return void
-     * @throws RandomException
+     * @return Redirector|RedirectResponse
      */
-    public function submit(): void
+    public function submit(): Redirector|RedirectResponse
     {
         $this->validate($this->rulesForPaymentMethod($this->paymentMethod));
 
-        $order = Order::firstOrCreate([
-            'user_id' => auth()->id(),
-            'order_number' => 'ORD-' . now()->format('Ymd'),
-            'total' => $this->cartTotal(),
-            'status' => 'pending',
-        ]);
+        try {
+            $order = Order::Create([
+                'user_id' => auth()->id(),
+                'order_number' => 'ORD-' . now()->format('YmdHis') . '-' . rand(100, 999),
+                'subtotal' => $this->cartSubtotal(),
+                'total' => $this->cartTotal(),
+                'status' => 'pending',
+            ]);
 
-        session()->flash('message', 'Order successfully placed!');
+            $pivotData = [];
+            foreach ($this->cart as $item) {
+                $pivotData[$item['id']] = [
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'shipping_cost' => $item['shipping_cost'],
+                    'discount_amount' => $item['discount_amount'] ?? 0,
+                ];
+            }
+            $order->products()->sync($pivotData); // sync vervangt oude pivot entries
+
+            $payment = PaymentModel::firstOrCreate([
+                'user_id' => auth()->id(),
+                'order_id' => $order->id,
+                'amount' => $this->cartTotal(),
+                'currency' => 'EUR',
+                'status' => 'pending',
+                'payment_method' => $this->paymentMethod,
+                'paid_at' => now(),
+                'metadata' => json_encode([])
+            ]);
+
+            session()->forget('cart');
+            session(['recent_order_id' => $order->id]);
+
+            return redirect()->route('order-confirmed');
+        } catch (\Exception $e) {
+            \Log::error('Order submission failed: ' . $e->getMessage());
+
+            session()->flash('error', 'An error occurred while processing your order. Please try again.');
+
+            return redirect()->back();
+        }
     }
 
     /**

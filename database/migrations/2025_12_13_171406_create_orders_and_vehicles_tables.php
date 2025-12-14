@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // relatie met users
             $table->string('order_number')->unique();
+            $table->decimal('subtotal', 10, 2);
             $table->decimal('total', 10, 2);
             $table->string('status')->default('pending');
             $table->timestamps();

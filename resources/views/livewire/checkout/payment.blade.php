@@ -15,7 +15,7 @@
             </div>
 
             {{-- Payment methods --}}
-            <form method="POST" action="" class="bg-gray-50 rounded-md p-6 shadow-inner" novalidate>
+            <form wire:submit.prevent="submit" class="bg-gray-50 rounded-md p-6 shadow-inner" novalidate>
                 @csrf
 
                 <fieldset class="space-y-6 mb-6">

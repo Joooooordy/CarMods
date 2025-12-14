@@ -17,6 +17,7 @@ class OrderFactory extends Factory
 
         return [
             'order_number' => strtoupper(Str::random(10)),
+            'subtotal' => $this->faker->numberBetween(30, 600),
             'total' => $this->faker->numberBetween(20, 500),
             'status' => $this->faker->randomElement($statusOptions),
         ];

@@ -3,16 +3,16 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class RdwApiService
 {
     protected string $baseUrl = 'https://opendata.rdw.nl/resource/m9d7-ebf2.json';
 
     /**
-     * Haal voertuiggegevens op van RDW API op basis van kenteken.
-     * @param string $kenteken
-     * @return array|null
+     * Fetches license plate data from an external API based on the provided license plate string.
+     *
+     * @param string $kenteken The license plate string to query, cleaned and converted to uppercase.
+     * @return array|null The license plate data if the API call is successful and data is available, otherwise null.
      */
     public function getLicensePlateData(string $kenteken): ?array
     {
@@ -27,6 +27,12 @@ class RdwApiService
         return null;
     }
 
+    /**
+     * Retrieves the fuel type for a given vehicle based on the provided license plate.
+     *
+     * @param string $kenteken The license plate of the vehicle.
+     * @return string|null Returns the fuel type description if found, otherwise null.
+     */
     public function getFuelType(string $kenteken): ?string
     {
         $response = Http::get('https://opendata.rdw.nl/resource/8ys7-d773.json', [

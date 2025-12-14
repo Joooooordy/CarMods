@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'edit users']);
         Permission::firstOrCreate(['name' => 'delete users']);
 
+        // Producten
+        Product::factory()->count(100)->create();
+
         // Rollen aanmaken
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $userRole  = Role::firstOrCreate(['name' => 'user']);
@@ -45,11 +48,24 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $user->id,
             ]);
 
-            $orders->each(function($order) use ($user) {
+            $orders->each(function ($order) use ($user) {
+                // Payment
                 Payment::factory()->create([
                     'user_id' => $user->id,
                     'order_id' => $order->id,
                 ]);
+
+                // Products koppelen
+                $products = Product::inRandomOrder()->take(rand(1,5))->get();
+                foreach ($products as $product) {
+                    $quantity = rand(1, 3);
+                    $order->products()->attach($product->id, [
+                        'quantity' => $quantity,
+                        'price' => $product->price,
+                        'shipping_cost' => $product->shipping_cost ?? 0,
+                        'discount_amount' => rand(5, 60),
+                    ]);
+                }
             });
         });
 
@@ -62,8 +78,5 @@ class DatabaseSeeder extends Seeder
         $address = Address::factory()->create(['user_id' => $testUser->id]);
         $testUser->update(['address_id' => $address->id]);
         $testUser->assignRole('admin');
-
-        // Producten
-        Product::factory()->count(100)->create();
     }
 }

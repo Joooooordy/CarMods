@@ -35,13 +35,9 @@ class Shop extends Component
                 'price' => $product->price,
                 'image' => $product->image,
                 'quantity' => 1,
+                'shipping_cost' => $product->shipping_cost,
             ];
         }
-//
-//        $this->relatedProducts = Product::where('category_id', $product->category_id)
-//            ->where('id', '!=', $product->id)
-//            ->take(6)
-//            ->get();
 
         $this->cart = $cart;
         $this->dispatch('cartUpdated');
@@ -49,17 +45,11 @@ class Shop extends Component
             'name' => $product->name,
         ]);
         session()->put('cart', $cart);
-        $this->showModal = true;
-    }
-
-    public function closeModal(): void
-    {
-        $this->showModal = false;
     }
 
     public function render(): View
     {
-        return view('livewire.shop.show', [
+        return view('livewire.shop.shop', [
             'products' => Product::paginate(16),
         ]);
     }

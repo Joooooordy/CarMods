@@ -92,7 +92,7 @@
     @endif
 
     <div class="mt-8 flex justify-end">
-        <button wire:click="saveShipping"
+        <button wire:click="continue"
                 class="bg-yellow-500 hover:bg-yellow-600 text-white text-center py-3 px-6 rounded-lg font-semibold shadow-md transition duration-200 ease-in-out cursor-pointer">
             {{ __('Continue to payment') }}
         </button>
