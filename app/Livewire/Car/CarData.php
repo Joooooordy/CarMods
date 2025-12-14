@@ -17,6 +17,7 @@ class CarData extends Component
     public string $formattedLicensePlate = '';
     public array $vehicleData = [];
     public array $formattedFields = [];
+    public bool $vehicleAdded = false;
     private const SKIP_PREFIXES = ['api_', 'registratie'];
     private const SKIP_SUFFIXES = ['_dt'];
 
@@ -82,6 +83,10 @@ class CarData extends Component
      */
     public function addVehicle()
     {
+        if (auth()->user()->vehicles()->where('vehicle_id', $this->vehicleId)->exists()) {
+            $this->vehicleAdded = true;
+            return;
+        }
 
         $this->validate([
             'licensePlate' => 'required|string|min:6|max:8',
@@ -100,7 +105,7 @@ class CarData extends Component
             'licenseplate_id' => $kenteken->id,
         ]);
 
-        session()->flash('success', 'Vehicle saved successfully!');
+        $this->dispatch('vehicle-added');
     }
 
     /**

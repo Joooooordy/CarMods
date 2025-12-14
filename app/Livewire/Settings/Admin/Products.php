@@ -79,7 +79,7 @@ class Products extends Component
     {
         $products = Product::orderByDesc('created_at')->paginate($this->perPage);
 
-        return view('livewire.admin.products', [
+        return view('livewire.settings.admin.products', [
             'products' => $products
         ]);
     }
