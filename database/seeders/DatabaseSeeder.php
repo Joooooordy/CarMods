@@ -2,65 +2,68 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use App\Models\User;
 use App\Models\Address;
 use App\Models\Product;
-use App\Models\User;
-use Illuminate\Database\Seeder;
+use App\Models\Order;
+use App\Models\Payment;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Maak permissies aan
+        // Permissies aanmaken
         Permission::firstOrCreate(['name' => 'view admin panel']);
         Permission::firstOrCreate(['name' => 'edit users']);
         Permission::firstOrCreate(['name' => 'delete users']);
 
-        // Maak rollen aan
+        // Rollen aanmaken
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $userRole = Role::firstOrCreate(['name' => 'user']);
+        $userRole  = Role::firstOrCreate(['name' => 'user']);
 
-        // Koppel permissies aan rollen
-        $adminRole->givePermissionTo([
-            'view admin panel',
-            'edit users',
-            'delete users',
-        ]);
+        $adminRole->givePermissionTo(['view admin panel', 'edit users', 'delete users']);
 
-        // Maak 25 gebruikers aan met bijbehorende adressen
-        $users = User::factory()->count(25)->create();
+        // 25 gebruikers met adressen
+        $users = User::factory()->count(25)->create()->each(function ($user, $index) {
+            $address = Address::factory()->create(['user_id' => $user->id]);
 
-        foreach ($users as $index => $user) {
-            // Adres aanmaken en koppelen
-            $address = Address::factory()->create([
+            $roleId = ($index % 5 === 0) ? 1 : 2;
+
+            $user->update([
+                'address_id' => $address->id,
+                'role_id' => $roleId,
+            ]);
+
+            $user->assignRole($roleId === 1 ? 'admin' : 'user');
+
+            // Orders en Payments per user
+            $orders = Order::factory(rand(2,5))->create([
                 'user_id' => $user->id,
             ]);
-            $user->update(['address_id' => $address->id]);
 
-            // Rol toewijzen
-            if ($index % 5 === 0) {
-                $user->assignRole('admin');
-            } else {
-                $user->assignRole('user');
-            }
-        }
+            $orders->each(function($order) use ($user) {
+                Payment::factory()->create([
+                    'user_id' => $user->id,
+                    'order_id' => $order->id,
+                ]);
+            });
+        });
 
         // Specifieke test admin user
         $testUser = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@test.com',
+            'role_id' => 1,
         ]);
-        $address = Address::factory()->create([
-            'user_id' => $testUser->id,
-        ]);
+        $address = Address::factory()->create(['user_id' => $testUser->id]);
         $testUser->update(['address_id' => $address->id]);
         $testUser->assignRole('admin');
 
+        // Producten
         Product::factory()->count(100)->create();
     }
 }

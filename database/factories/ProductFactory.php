@@ -21,6 +21,7 @@ class ProductFactory extends Factory
             'name' => $product['name'],
             'description' => fake()->realText(400),
             'price' => $product['price'],
+            'shipping_cost' => $product['shipping_cost'],
             'stock' => fake()->numberBetween(0, 100),
             'image' => fake()->imageUrl(400, 400, 'products', true),
         ];

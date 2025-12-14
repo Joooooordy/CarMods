@@ -18,7 +18,7 @@
 
             <!-- CTA knop -->
             <div class="mt-8 flex gap-5 justify-center">
-                <a href="{{ route('add-car') }}"
+                <a href="{{ route('search-car') }}"
                    class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-6 py-3 rounded-xl shadow transition duration-200">
                    Find Your Car
                 </a>

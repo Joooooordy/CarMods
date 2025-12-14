@@ -14,7 +14,7 @@
     </a>
 
     <flux:navbar class="-mb-px max-lg:hidden">
-        <flux:navbar.item icon="plus-circle" :href="route('add-car')" :current="request()->routeIs('add-car')"
+        <flux:navbar.item icon="plus-circle" :href="route('search-car')" :current="request()->routeIs('search-car')"
                           wire:navigate>
             {{ __('Add Car') }}
         </flux:navbar.item>
@@ -45,7 +45,7 @@
             />
         </flux:tooltip>
 
-        @livewire('cart-badge')
+        @livewire('cart.cart-badge')
 
     </flux:navbar>
 
@@ -58,7 +58,7 @@
 
         <flux:navmenu class="max-w-[12rem]">
             <div class="px-2 py-1.5">
-                <flux:text size="sm">Signed in as</flux:text>
+                <flux:text size="sm">{{ __('Signed in as') }}</flux:text>
                 <flux:heading class="mt-1! truncate">{{auth()->user()->email}}</flux:heading>
             </div>
             <flux:navmenu.separator/>

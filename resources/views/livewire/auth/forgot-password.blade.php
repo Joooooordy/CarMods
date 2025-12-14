@@ -7,12 +7,12 @@
     <form wire:submit="sendPasswordResetLink" class="flex flex-col gap-6">
         <!-- Email Address -->
         <flux:input
-            wire:model="email"
+            wire:model.live="email"
             :label="__('Email Address')"
             type="email"
             required
             autofocus
-            placeholder="email@example.com"
+            :placeholder="__('email@example.com')"
             viewable
         />
 

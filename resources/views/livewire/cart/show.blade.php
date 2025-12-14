@@ -1,5 +1,5 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8">Cart</h1>
+    <h1 class="text-3xl font-bold mb-8">{{ __('Cart') }}</h1>
 
     <div class="flex flex-col lg:flex-row gap-8">
         {{-- Linkerkant: Productenlijst --}}
@@ -45,7 +45,7 @@
                                 @endfor
                             </select>
 
-                            <button wire:click="toggleFavorite({{ $item['id'] }})" title="Favoriet"
+                            <button wire:click="toggleFavorite({{ $item['id'] }})" title="{{ __('Favoriet') }}"
                                     class="text-yellow-500 hover:text-yellow-800 border-2 border-transparent hover:border-yellow-500 p-2 rounded cursor-pointer transition">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -54,7 +54,7 @@
                                 </svg>
                             </button>
 
-                            <button wire:click="removeFromCart({{ $item['id'] }})" title="Verwijder"
+                            <button wire:click="removeFromCart({{ $item['id'] }})" title="{{ __('Verwijder') }}"
                                     class="text-red-600 hover:text-red-800 border-2 border-transparent hover:border-red-900 p-2 rounded cursor-pointer transition">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -68,7 +68,7 @@
                         <div class="flex justify-start space-x-4 mt-4 items-center">
                             <span
                                 class="text-sm text-green-700 font-semibold border border-green-700 px-2 py-0.5 rounded mr-2">
-                                In Stock
+                                {{ __('In Stock') }}
                             </span>
 
                             +
@@ -85,7 +85,7 @@
                         </div>
 
                         <span class="text-xs text-black dark:text-black mt-1">
-                          Order by today 23:59, get it tomorrow
+                          {{ __('Order by today 23:59, get it tomorrow') }}
                         </span>
 
                     </div>
@@ -93,16 +93,16 @@
             @empty
                 <div class="flex justify-center items-center bg-yellow-50 rounded-2xl mt-3 w-full h-[17rem]">
                     <img src="{{ asset('img/CarMods.svg') }}"
-                         alt="CarMods Logo"
+                         alt="{{ __('CarMods Logo') }}"
                          class="h-25 w-25 sm:h-50 sm:w-50 object-contain drop-shadow-md"/>
                 </div>
 
                 <div class="flex justify-center items-center mt-4 mb-2 w-full text-center">
                     <div>
                         <h1 class="text-2xl font-bold mb-2 mr-auto mb-none ml-auto w-full text-28 text-brand-text-high">
-                            Are you sure you put some products in?
+                            {{ __('Are you sure you put some products in?') }}
                         </h1>
-                        <p class="mt-none text-18 text-neutral-text-high">Looking for ideas?</p>
+                        <p class="mt-none text-18 text-neutral-text-high">{{ __('Looking for ideas?') }}</p>
                         <div class="flex flex-wrap justify-center gap-4 mt-none mb-18 w-full">
                             <a href="{{ route('shop') }}"
                                class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-xl shadow transition duration-200 mt-8">
@@ -112,49 +112,49 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                           d="M15.75 19.5 8.25 12l7.5-7.5"/>
                                 </svg>
-                                Continue Shopping
+                                {{ __('Continue Shopping') }}
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    There are still {{count($cart)}} products on your <a href="{{route('cart')}}">wishlist</a>
+                    {{ __('There are still :count products on your', ['count' => count($cart)]) }} <a href="{{route('cart')}}">{{ __('wishlist') }}</a>
                 </div>
             @endforelse
         </div>
 
         @if (!empty($cart))
             <aside class="w-full lg:w-96 bg-white border rounded-lg p-6 shadow-sm">
-                <h2 class="font-bold text-xl mb-4">Overview</h2>
+                <h2 class="font-bold text-xl mb-4">{{ __('Overview') }}</h2>
 
                 <div class="mb-2">
                     <div class="flex gap-2 justify-between">
-                        <span>Total Products ({{ count($cart) }})</span>
+                        <span>{{ __('Total Products (:count)', ['count' => count($cart)]) }}</span>
                         <span
                             class="font-semibold">€ {{ number_format(collect($cart)->sum(fn($i) => $i['price'] * $i['quantity']), 2, ',', '.') }}</span>
                     </div>
                 </div>
 
                 <div class="flex justify-between mb-2">
-                    <span>Shipping</span>
+                    <span>{{ __('Shipping') }}</span>
                     <span class="text-green-600 font-semibold">€ 0,00</span>
                 </div>
 
                 <hr class="my-4"/>
 
                 <div class="mb-6">
-                    Do you have a discount code? Add it in the next step.
+                    {{ __('Do you have a discount code? Add it in the next step.') }}
                 </div>
 
                 <div class="bg-yellow-100 p-3 rounded-md flex justify-between items-center mb-6">
-                    <span class="font-semibold text-lg">Total to pay:</span>
+                    <span class="font-semibold text-lg">{{ __('Total to pay:') }}</span>
                     <span
                         class="font-bold text-xl">€ {{ number_format(collect($cart)->sum(fn($i) => $i['price'] * $i['quantity']), 2, ',', '.') }}</span>
                 </div>
 
                 <a href="{{ route('checkout.billing') }}" class="block w-full max-w-md mx-auto bg-yellow-500 hover:bg-yellow-600 text-white text-center py-3 px-6 rounded-lg font-semibold shadow-md transition duration-200 ease-in-out mb-4">
-                    Go to Checkout
+                    {{ __('Go to Checkout') }}
                 </a>
 
 
@@ -183,7 +183,7 @@
                 </div>
 
                 <div class="text-center text-gray-500 text-sm mb-2">
-                    or choose for comfort with
+                    {{ __('or choose for comfort with') }}
                 </div>
 
                 <div class="flex justify-center gap-4">
@@ -198,7 +198,7 @@
     {{-- Vaak samen gekocht sectie --}}
     @if (!empty($cart))
         <section class="mt-16">
-            <h2 class="text-2xl font-bold mb-6">Often bought together</h2>
+            <h2 class="text-2xl font-bold mb-6">{{ __('Often bought together') }}</h2>
             <div class="flex gap-4 overflow-x-auto">
                 {{--            @foreach($relatedProducts as $product)--}}
                 {{--                <div class="w-24 flex-shrink-0">--}}
