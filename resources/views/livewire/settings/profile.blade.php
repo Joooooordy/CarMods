@@ -22,7 +22,7 @@
                 <!-- Persoonlijke gegevens -->
                 <div class="md:col-span-2">
                     <flux:fieldset class="border border-gray-300 rounded-lg p-6 shadow-inner bg-white dark:bg-gray-800">
-                        <flux:legend class="text-lg font-semibold text-indigo-600 mb-4">Persoonlijke gegevens
+                        <flux:legend class="text-lg font-semibold text-indigo-600 mb-4">{{__('Personal Data')}}
                         </flux:legend>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -33,10 +33,10 @@
                                         autocomplete="email"
                                         class="rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition"/>
                         </div>
-                        {{-- Birthdate --}}
-                        {{--                        <div class="grid grid-cols-1 md:grid-cols-3">--}}
-                        {{--                            <x-aui::date-picker class="w-96" mode="single" />--}}
-                        {{--                        </div>--}}
+{{--                         Birthdate--}}
+{{--                                                <div class="grid grid-cols-1 md:grid-cols-3">--}}
+{{--                                                    <x-aui::date-picker class="w-96" mode="single" />--}}
+{{--                                                </div>--}}
                     </flux:fieldset>
                 </div>
             </div>
@@ -59,7 +59,7 @@
 
             <!-- Bankgegevens -->
             <flux:fieldset class="border border-gray-300 rounded-lg p-6 shadow-inner bg-white dark:bg-gray-800">
-                <flux:legend class="text-lg font-semibold text-indigo-600 mb-4">Bankgegevens</flux:legend>
+                <flux:legend class="text-lg font-semibold text-indigo-600 mb-4">{{__('Bankrecords')}}</flux:legend>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <flux:input wire:model.live="bank_account" :label="__('Bank account')" type="text" autocomplete="off"
                                 class="rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition"/>
@@ -68,7 +68,7 @@
 
             <!-- Adresgegevens -->
             <flux:fieldset class="border border-gray-300 rounded-lg p-6 shadow-inner bg-white dark:bg-gray-800">
-                <flux:legend class="text-lg font-semibold text-indigo-600 mb-4">Adresgegevens</flux:legend>
+                <flux:legend class="text-lg font-semibold text-indigo-600 mb-4">{{__('Address')}}</flux:legend>
                 <div class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <flux:input label="Street address" placeholder="123 Main St" wire:model.live="street"
