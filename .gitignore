@@ -14,6 +14,7 @@ auth.json
 /public/hot
 /public/build
 /public/storage
+/storage
 /storage/*.key
 /storage/pail
 Homestead.json
@@ -54,25 +55,19 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db
 Desktop.ini
 
 # Node.js
 node_modules/
-npm-debug.log
-yarn-error.log
 yarn-debug.log
 .yarn-integrity
 .npm
 
 # Build artifacts
-/public/build
 /public/mix-manifest.json
-/public/hot
 
 # Testing
 /.phpunit.cache
-.phpunit.result.cache
 coverage/
 .coverage
 

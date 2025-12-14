@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\Auth\Register;
+use App\Livewire\Auth\Register;
 use Livewire\Livewire;
 
 test('registration screen can be rendered', function () {

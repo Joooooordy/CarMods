@@ -1,10 +1,10 @@
 <div class="w-full max-w-4xl mx-auto my-8">
     @php
         $steps = [
-            1 => 'Billing',
-            2 => 'Shipping',
-            3 => 'Payment',
-            4 => 'Order Overview',
+            1 => __('Billing'),
+            2 => __('Shipping'),
+            3 => __('Payment'),
+            4 => __('Order Overview'),
         ];
         $totalSteps = count($steps);
     @endphp

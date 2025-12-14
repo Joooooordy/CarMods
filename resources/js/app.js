@@ -1,20 +1,17 @@
 import $ from 'jquery';
 import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
 import flatpickr from "flatpickr";
-
-window.$ = window.jQuery = $;
 import Inputmask from "inputmask";
 import pikaday from 'pikaday';
-
-window.Pikaday = pikaday;
 import '/vendor/yungifez/artisan-ui/dist/artisan.js'
 import Typewriter from 'typewriter-effect/dist/core';
 import Swal from "sweetalert2";
 
+window.$ = window.jQuery = $;
+window.Pikaday = pikaday;
+
 // ***********************************
-// **
 // * LICENSE PLATE FUNCTIONS
-// **
 // ***********************************
 
 // Insert helper
@@ -142,9 +139,7 @@ const app = {
 app.init();
 
 // ***********************************
-// **
 // * TOGGLE BUTTON VEHICLEDATA ON SHOWCARDATA PAGE
-// **
 // ***********************************
 $(function () {
     $(function () {
@@ -155,18 +150,36 @@ $(function () {
             $(this).toggleClass('active');
 
             if ($(this).hasClass('active')) {
-                $(this).text('Verberg gegevens');
+                $(this).text('Hide data');
             } else {
-                $(this).text('Laad meer gegevens...');
+                $(this).text('Load more data...');
             }
         });
     });
 });
 
+
 // ***********************************
-// **
+// * SHOW ICONS ON CAR DATA PAGE
+// ***********************************
+const icons = document.querySelectorAll('.icon[data-darkbgimage]');
+icons.forEach(el => {
+    const bg = el.getAttribute('data-darkbgimage');
+    if (bg) {
+        const url = bg.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
+        const img = new Image();
+        img.onload = () => {
+            el.style.backgroundImage = bg;
+        };
+        img.onerror = () => {
+            console.warn('Could not load', bg);
+        };
+        img.src = url;
+    }
+});
+
+// ***********************************
 // * SHOP MESSAGES
-// **
 // ***********************************
 $(document).ready(function () {
     window.addEventListener('product-added', function (event) {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\Auth\ConfirmPassword;
+use App\Livewire\Auth\ConfirmPassword;
 use App\Models\User;
 use Livewire\Livewire;
 

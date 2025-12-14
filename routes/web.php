@@ -1,19 +1,21 @@
 <?php
 
 
-use App\Http\Controllers\VehicleController;
-use App\Http\Livewire\AddCar;
-use App\Http\Livewire\Admin\Products;
-use App\Http\Livewire\Cart;
-use App\Http\Livewire\Checkout;
-use App\Http\Livewire\Checkout\Billing;
-use App\Http\Livewire\Checkout\Payment;
-use App\Http\Livewire\Checkout\Shipping;
-use App\Http\Livewire\Settings\Appearance;
-use App\Http\Livewire\Settings\Password;
-use App\Http\Livewire\Settings\Profile;
-use App\Http\Livewire\Admin\Users;
-use App\Http\Livewire\Shop;
+use App\Livewire\Car\CarData;
+use App\Livewire\SearchCar;
+use App\Livewire\Cart\Cart;
+use App\Livewire\Checkout\Billing;
+use App\Livewire\Checkout\Payment;
+use App\Livewire\Checkout\Shipping;
+use App\Livewire\Settings\Admin\Orders;
+use App\Livewire\Settings\Admin\Products;
+use App\Livewire\Settings\Admin\Users;
+use App\Livewire\Settings\Appearance;
+use App\Livewire\Settings\Order;
+use App\Livewire\Settings\Password;
+use App\Livewire\Settings\Profile;
+use App\Livewire\Settings\UserVehicle;
+use App\Livewire\Shop;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,11 +27,11 @@ Route::get('/shop', Shop::class)->name('shop');
 Route::middleware(['auth'])->group(function () {
     Route::view('home', 'dashboard')->middleware(['verified'])->name('dashboard');
 
-//    Car
-    Route::get('/voeg-auto-toe', AddCar::class)->name('add-car');
-    Route::get('/kenteken/{vehicle}', [VehicleController::class, 'show'])->name('car.show');
+    //Car
+    Route::get('/search-car', SearchCar::class)->name('search-car');
+    Route::get('/licenseplate/{vehicle}', CarData::class)->name('car-data');
 
-//    Shopping Cart
+    //Shopping Cart
     Route::get('/cart', Cart::class)->name('cart');
 
     Route::prefix('checkout')
@@ -40,15 +42,20 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/payment', Payment::class)->name('checkout.payment');
         });
 
-//    Settings
+    //Settings
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+    Route::get('settings/orders', Order::class)->name('settings.orders');
+    Route::get('settings/vehicles', UserVehicle::class)->name('settings.user-vehicles');
 
-    Route::get('settings/admin-user-panel', Users::class)->name('settings.admin_user_panel');
-    Route::get('settings/admin-product-panel', Products::class)->name('settings.admin_product_panel');
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('settings/admin-user-panel', Users::class)->name('settings.admin_user_panel');
+        Route::get('settings/admin-product-panel', Products::class)->name('settings.admin_product_panel');
+        Route::get('settings/admin-order-panel', Orders::class)->name('settings.admin_order_panel');
+    });
 });
 
 require __DIR__.'/auth.php';

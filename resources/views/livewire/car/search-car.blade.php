@@ -4,11 +4,11 @@
         <div class="text-center mb-12">
             <div class="flex justify-center mb-6">
                 <img src="{{ asset('img/CarMods.svg') }}"
-                     alt="CarMods Logo"
+                     alt="{{ __('CarMods Logo') }}"
                      class="h-75 w-75 object-contain drop-shadow-md"/>
             </div>
             <p class="text-gray-600 dark:text-gray-300 text-lg">
-                Log jouw auto en mods. Bekijk en deel jouw build met de community.
+                {{ __('Log your car and its mods. View and share your build with the community.') }}
             </p>
         </div>
 
@@ -21,10 +21,10 @@
 
         <!-- Kenteken Zoek -->
         <div class="bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-8 space-y-6 border border-gray-200 dark:border-gray-700">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Voeg je auto toe</h2>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">{{ __('Add your vehicle') }}</h2>
 
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Zoek op kenteken (NL)
+                {{ __('Search by License plate number (NL)') }}
             </label>
 
             <!-- Kentekenplaat stijl -->
@@ -35,8 +35,8 @@
                 </div>
                 <input type="text"
                        id="licensePlateInput"
-                       wire:model="licensePlate"
-                       placeholder="XX-123-X"
+                       wire:model.live="licensePlate"
+                       placeholder="{{ __('XX-123-X') }}"
                        maxlength="8"
                        class="licenseplateinput font-kenteken text-4xl text-center font-bold uppercase w-full h-20 bg-transparent text-gray-900 dark:text-white focus:outline-none px-4"/>
             </div>
@@ -51,7 +51,7 @@
                         wire:loading.attr="disabled"
                         class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition w-full">
                         <span wire:loading.remove>
-                            Zoek Kenteken
+                            {{ __('Search') }}
                         </span>
                         <span wire:loading>
                            <flux:icon.loading class="w-5 h-5 text-white animate-spin" />

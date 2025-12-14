@@ -12,20 +12,20 @@
             </button>
 
             @if($showForm)
-                <form wire:submit.prevent="save" id="newProductForm"
+                <form wire:submit="save" id="newProductForm"
                       class="bg-white dark:bg-gray-800 p-4 rounded shadow space-y-4">
                     <h2 class="text-xl font-bold">{{ $isEditing ? 'Editing Product' : 'New Product' }}</h2>
 
                     <flux:field>
                         <flux:label badge="Required">Name</flux:label>
-                        <flux:input wire:model="name" type="text" required/>
+                        <flux:input wire:model.live="name" type="text" required/>
                         <flux:error name="name"/>
                     </flux:field>
 
                     <flux:field>
                         <flux:label badge="Required">Description</flux:label>
                         <flux:textarea
-                            wire:model="description"
+                            wire:model.live="description"
                             placeholder="Description"
                             required
                         />
@@ -35,18 +35,18 @@
                     <flux:field>
                         <flux:label badge="Required">Price</flux:label>
                         <flux:input.group>
-                            <flux:select wire:model="currency" class="max-w-fit">
+                            <flux:select wire:model.live="currency" class="max-w-fit">
                                 <flux:select.option value="EUR">EUR</flux:select.option>
                                 <flux:select.option value="USD">USD</flux:select.option>
                                 <flux:select.option value="GBP">GBP</flux:select.option>
                                 <flux:select.option value="CAD">CAD</flux:select.option>
                             </flux:select>
-                            <flux:input wire:model="price" placeholder="€99,99" type="text"/>
+                            <flux:input wire:model.live="price" placeholder="€99,99" type="text"/>
                         </flux:input.group>
                         <flux:error name="price"/>
                     </flux:field>
 
-                    <flux:input type="file" wire:model="image" label="Product Image"/>
+                    <flux:input type="file" wire:model.live="image" label="Product Image"/>
 
                     {{-- Spinner tijdens uploaden van afbeelding --}}
                     <div wire:loading wire:target="image" class="flex flex-row items-center gap-2 mt-2">
