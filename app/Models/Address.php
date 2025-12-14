@@ -9,7 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Address extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'street', 'house_nr', 'zipcode', 'city', 'state', 'country'];
+    protected $fillable = [
+        'user_id',
+        'street',
+        'house_nr',
+        'zipcode',
+        'city',
+        'state',
+        'country'
+    ];
 
     public function user(): BelongsTo
     {

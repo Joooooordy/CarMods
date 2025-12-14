@@ -16,4 +16,12 @@ class Product extends Model
         'stock',
         'image',
     ];
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class)
+            ->withPivot(['quantity', 'price', 'shipping_cost', 'discount_amount'])
+            ->withTimestamps();
+    }
+
 }

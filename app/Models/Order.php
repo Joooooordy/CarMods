@@ -12,6 +12,7 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'order_number',
+        'subtotal',
         'total',
         'status',
     ];
@@ -26,6 +27,13 @@ class Order extends Model
 
     public function payment()
     {
-        return $this->belongsTo(Payment::class);
+        return $this->hasOne(Payment::class);
     }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class)
+            ->withPivot(['quantity', 'price', 'shipping_cost', 'discount_amount'])
+            ->withTimestamps();
+    }
+
 }

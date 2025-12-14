@@ -70,18 +70,6 @@
                                 class="text-sm text-green-700 font-semibold border border-green-700 px-2 py-0.5 rounded mr-2">
                                 {{ __('In Stock') }}
                             </span>
-
-                            +
-
-                            {{--                            @if (in_array($index, $premiumIndexes))--}}
-                            {{--                                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="32" viewBox="0 0 120 32" class="rounded-md">--}}
-                            {{--                                    <rect x="0" y="0" width="120" height="32" rx="6" fill="#e6c200"/>--}}
-                            {{--                                    <text x="60" y="21" font-size="16" font-family="Arial, sans-serif" fill="#000"--}}
-                            {{--                                          text-anchor="middle" font-weight="bold">--}}
-                            {{--                                        Premium+--}}
-                            {{--                                    </text>--}}
-                            {{--                                </svg>--}}
-                            {{--                            @endif--}}
                         </div>
 
                         <span class="text-xs text-black dark:text-black mt-1">
@@ -119,7 +107,8 @@
                 </div>
 
                 <div class="mb-4">
-                    {{ __('There are still :count products on your', ['count' => count($cart)]) }} <a href="{{route('cart')}}">{{ __('wishlist') }}</a>
+                    {{ __('There are still :count products on your', ['count' => count($cart)]) }} <a
+                        href="{{route('cart')}}">{{ __('wishlist') }}</a>
                 </div>
             @endforelse
         </div>
@@ -138,7 +127,7 @@
 
                 <div class="flex justify-between mb-2">
                     <span>{{ __('Shipping') }}</span>
-                    <span class="text-green-600 font-semibold">€ 0,00</span>
+                    <span class="text-green-600 font-semibold">€ {{ number_format($this->shippingTotal, 2) }}</span>
                 </div>
 
                 <hr class="my-4"/>
@@ -150,10 +139,11 @@
                 <div class="bg-yellow-100 p-3 rounded-md flex justify-between items-center mb-6">
                     <span class="font-semibold text-lg">{{ __('Total to pay:') }}</span>
                     <span
-                        class="font-bold text-xl">€ {{ number_format(collect($cart)->sum(fn($i) => $i['price'] * $i['quantity']), 2, ',', '.') }}</span>
+                        class="font-bold text-xl">€ {{ number_format($total, 2, ',', '.') }}</span>
                 </div>
 
-                <a href="{{ route('checkout.billing') }}" class="block w-full max-w-md mx-auto bg-yellow-500 hover:bg-yellow-600 text-white text-center py-3 px-6 rounded-lg font-semibold shadow-md transition duration-200 ease-in-out mb-4">
+                <a href="{{ route('checkout.billing') }}"
+                   class="block w-full max-w-md mx-auto bg-yellow-500 hover:bg-yellow-600 text-white text-center py-3 px-6 rounded-lg font-semibold shadow-md transition duration-200 ease-in-out mb-4">
                     {{ __('Go to Checkout') }}
                 </a>
 
@@ -198,14 +188,35 @@
     {{-- Vaak samen gekocht sectie --}}
     @if (!empty($cart))
         <section class="mt-16">
-            <h2 class="text-2xl font-bold mb-6">{{ __('Often bought together') }}</h2>
-            <div class="flex gap-4 overflow-x-auto">
-                {{--            @foreach($relatedProducts as $product)--}}
-                {{--                <div class="w-24 flex-shrink-0">--}}
-                {{--                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/96' }}" alt="{{ $product->name }}" class="rounded-md object-cover w-full h-24">--}}
-                {{--                    <p class="text-center text-sm mt-2 font-semibold truncate">{{ $product->name }}</p>--}}
-                {{--                </div>--}}
-                {{--            @endforeach--}}
+            <h1 class="text-3xl font-bold mb-8">{{ __('Often bought together') }}</h1>
+
+            <div class="flex gap-5 overflow-x-auto pb-2">
+                @foreach($this->relatedProducts as $product)
+                    <div
+                        class="min-w-[233px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition p-3">
+
+                        <img
+                            src="{{ image_url($product->id) ?? 'https://via.placeholder.com/160' }}"
+                            alt="{{ $product->name }}"
+                            class="rounded-lg object-cover w-full h-28"
+                        >
+
+                        <div class="mt-3 text-center">
+                            <p class="text-sm font-semibold truncate">
+                                {{ $product->name }}
+                            </p>
+
+                            <p class="text-xs text-gray-500 mt-1">
+                                €{{ number_format($product->price, 2) }}
+                            </p>
+                        </div>
+
+                        {{-- Actions --}}
+                        <div class="mt-3 flex items-center justify-center gap-2">
+                            @include('components.layouts.product-actions', ['product' => $product])
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </section>
     @endif
