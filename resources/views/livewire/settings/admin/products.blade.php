@@ -1,7 +1,8 @@
-<div class="p-6 space-y-6">
+<div>
     @include('partials.settings-heading')
-    <x-settings.admin-layout :heading="__('Product Panel')"
-                             :subheading="__('View and edit existing products and add new products.')">
+    <x-settings.layout :heading="__('Product Panel')"
+                      :subheading="__('View and edit existing products and add new products.')"
+                      content-class="w-full max-w-none">
 
         <div class="mt-10 text-left pb-10">
             <button wire:click="toggleForm"
@@ -113,5 +114,5 @@
                 {{ $products->links() }}
             </div>
         @endif
-    </x-settings.admin-layout>
+    </x-settings.layout>
 </div>
