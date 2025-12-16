@@ -34,6 +34,7 @@ class Profile extends Component
 
     public function mount(): void
     {
+        // pak user data voor automatisch invullen
         $user = Auth::user();
 
         $this->name = $user->name;
@@ -58,6 +59,7 @@ class Profile extends Component
         $user = Auth::user();
         $address = Address::find($this->address_id) ?? new Address(['user_id' => $user->id]);
 
+        // validatie
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -87,8 +89,10 @@ class Profile extends Component
             'country' => $this->country,
         ]);
 
+        // sla adres op
         $address->save();
 
+        // sla avatar veilig op
         if ($this->avatarFile) {
             $userId = $user->id;
             $random_string = Str::random(8);
@@ -108,8 +112,10 @@ class Profile extends Component
             $user->email_verified_at = null;
         }
 
+        // sla user op
         $user->save();
 
+        // dispatch event
         $this->dispatch('browser-event', [
             'name' => 'profile-updated',
             'data' => [

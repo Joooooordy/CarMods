@@ -103,13 +103,14 @@ class Shipping extends Component
 
     public function saveShipping(): RedirectResponse
     {
+        // validatie
         $validated = Validator::make($this->getValidationData(), $this->billingRules())
             ->validate();
 
         try {
             $userId = auth()->id();
 
-            // Split street address into street + house number (last token)
+            // Split street_address in 2 velden: straat en huisnummer
             $addressParts = preg_split('/\s+/', trim($validated['street_address'])) ?: [];
             if (count($addressParts) < 2) {
                 session()->flash('error', 'Enter a valid street address.');
@@ -119,7 +120,7 @@ class Shipping extends Component
             $houseNumber = array_pop($addressParts);
             $street = implode(' ', $addressParts);
 
-            // Map validated fields to DB columns
+            // zet attributen voor opslaan in db
             $addressAttributes = [
                 'street' => $street,
                 'house_nr' => $houseNumber,
@@ -129,8 +130,12 @@ class Shipping extends Component
                 'country' => $validated['country'],
             ];
 
+            // sla adres op in db
             Address::updateOrCreate(['user_id' => $userId], $addressAttributes);
 
+            // kijk of user bewerkt is tijdens het invullen van formulier
+            // ja: zet first_name en last_name bij elkaar voor db opslaan
+            // en zet de attributen, daarna opslaan in db
             $user = auth()->user();
             if ($user) {
                 $fullName = trim($validated['first_name'] . ' ' . $validated['last_name']);
@@ -163,6 +168,7 @@ class Shipping extends Component
 
     protected function rules(): array
     {
+        // validatie regels
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',

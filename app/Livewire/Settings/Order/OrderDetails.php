@@ -14,6 +14,7 @@ class OrderDetails extends Component
     {
         $this->order = $order;
 
+        // calculeer korting
         $this->totalDiscount = $order->products->sum(fn($product) => $product->pivot->discount_amount ?? 0);
     }
 

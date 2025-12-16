@@ -22,6 +22,7 @@ class Shop extends Component
 
     public function addToCart(int $productId): void
     {
+        // pak product obv id
         $product = \App\Models\Product::findOrFail($productId);
 
         $cart = $this->cart;
@@ -40,10 +41,14 @@ class Shop extends Component
         }
 
         $this->cart = $cart;
+
+        // dispatch cart updated en product toegevoegd
         $this->dispatch('cartUpdated');
         $this->dispatch('product-added', [
             'name' => $product->name,
         ]);
+
+        // update sessie met nieuwe cart
         session()->put('cart', $cart);
     }
 

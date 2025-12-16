@@ -50,6 +50,7 @@ class Payment extends Component
      */
     protected function calculateShippingCost(): void
     {
+        // pak de productids
         $productIds = collect($this->cart)->pluck('id')->filter()->unique()->values();
 
         if ($productIds->isEmpty()) {
@@ -59,6 +60,7 @@ class Payment extends Component
 
         $productsById = Product::whereIn('id', $productIds)->get()->keyBy('id');
 
+        // calculeer de verzendkosten
         $this->shippingCost = (int)collect($this->cart)->sum(
             fn(array $item) => (int)($productsById[$item['id']]->shipping_cost ?? 0)
         );
@@ -77,6 +79,7 @@ class Payment extends Component
      */
     public function getCardTypeProperty(): ?string
     {
+        // normaliseer cc_number input naar alleen cijfers
         $number = preg_replace('/\D/', '', $this->cc_number) ?? '';
 
         $patterns = [
@@ -141,6 +144,7 @@ class Payment extends Component
      */
     private function cartSubtotal(): float
     {
+        // calculeer subtotaal (zonder shipping)
         return (float)collect($this->cart)->sum(
             fn(array $item) => (float)($item['price'] * $item['quantity'])
         );
@@ -148,6 +152,7 @@ class Payment extends Component
 
     private function cartTotal(): float
     {
+        // calculeer totaal (met shipping)
         return $this->cartSubtotal() + $this->shippingCost - $this->discountAmount;
     }
 
@@ -161,6 +166,7 @@ class Payment extends Component
      */
     private function normalizedDiscountCode(): string
     {
+        // normaliseer de kortingscode
         return strtoupper(trim($this->discountCode));
     }
 
@@ -191,6 +197,7 @@ class Payment extends Component
             return;
         }
 
+        // rond af op 2 decimalen
         $this->discountAmount = round($this->cartSubtotal() * self::DISCOUNT_RATE, 2);
         session()->flash('discountMessage', 'Discount code applied: 20% off!');
     }
@@ -205,9 +212,11 @@ class Payment extends Component
      */
     public function submit(): Redirector|RedirectResponse
     {
+        // validatie
         $this->validate($this->rulesForPaymentMethod($this->paymentMethod));
 
         try {
+            // sla order op in db
             $order = Order::Create([
                 'user_id' => auth()->id(),
                 'order_number' => 'ORD-' . now()->format('YmdHis') . '-' . rand(100, 999),
@@ -216,6 +225,7 @@ class Payment extends Component
                 'status' => 'pending',
             ]);
 
+            // sla ook order items op in db
             $pivotData = [];
             foreach ($this->cart as $item) {
                 $pivotData[$item['id']] = [
@@ -227,6 +237,7 @@ class Payment extends Component
             }
             $order->products()->sync($pivotData); // sync vervangt oude pivot entries
 
+            // sla de betaling op in db
             $payment = PaymentModel::firstOrCreate([
                 'user_id' => auth()->id(),
                 'order_id' => $order->id,
@@ -238,7 +249,10 @@ class Payment extends Component
                 'metadata' => json_encode([])
             ]);
 
+            // maak de sessie van de cart leeg
             session()->forget('cart');
+
+            // zet een recent order id in de sessie
             session(['recent_order_id' => $order->id]);
 
             return redirect()->route('order-confirmed');

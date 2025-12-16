@@ -35,7 +35,9 @@ class Products extends Component
 
     public function edit($id): void
     {
+        // pak product met id
         $product = Product::findOrFail($id);
+
         $this->productId = $id;
         $this->name = $product->name;
         $this->description = $product->description;
@@ -47,20 +49,24 @@ class Products extends Component
 
     public function delete($id): void
     {
+        // pak product per id en verwijder
         Product::findOrFail($id)->delete();
         $this->resetForm();
     }
 
     public function save(): void
     {
+        // valideer data
         $data = $this->validate();
 
+        // sla afbeelding veilig op
         if ($this->image instanceof UploadedFile) {
             $data['image'] = saveFileSafely($this->image, null, 'products', $this->productId);
         } elseif ($this->isEditing) {
             unset($data['image']);
         }
 
+        // sla product op in db
         Product::updateOrCreate(
             ['id' => $this->productId],
             $data

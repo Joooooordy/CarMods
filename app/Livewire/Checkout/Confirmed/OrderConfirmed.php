@@ -10,6 +10,7 @@ class OrderConfirmed extends Component
 
     public function getOrder(User $user)
     {
+        // return laatst geplaatste order door user
         return $user->orders()->latest()->first();
     }
 
