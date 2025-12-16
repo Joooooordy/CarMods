@@ -26,9 +26,13 @@ class SearchCar extends Component
             'licensePlate' => 'required|string|max:8|min:6',
         ]);
 
+        // maak connectie met RDW-api
         $this->rdwApi = app(RdwApiService::class);
+
+        // krijg data van de api
         $data = $this->rdwApi->getLicensePlateData($this->licensePlate);
 
+        // als data bestaat, sla op in db
         if ($data) {
             $this->vehicleData = json_decode(json_encode($data), true);
             $this->vehicleLicense = $this->vehicleData['kenteken'];
@@ -47,6 +51,7 @@ class SearchCar extends Component
 
     protected function saveVehicle()
     {
+        // sla op in db
         return Kenteken::updateOrCreate(
             ['licenseplate' => $this->vehicleLicense],
             [
@@ -61,6 +66,7 @@ class SearchCar extends Component
         $kenteken = strtoupper(preg_replace('/[^A-Z0-9]/', '', $kenteken));
 
         // RDW heeft 9 officiële kentekenformaten
+        // formatteer daaraan
         $formats = [
             '/^([A-Z]{2})([0-9]{2})([0-9]{2})$/'     => '$1-$2-$3',  // AB-12-34
             '/^([0-9]{2})([0-9]{2})([A-Z]{2})$/'     => '$1-$2-$3',  // 12-34-AB

@@ -42,6 +42,7 @@ class Billing extends Component
      */
     public function mount()
     {
+        // formulier automatisch ingevulde data
         $user = Auth::user();
 
         if ($user) {
@@ -86,74 +87,65 @@ class Billing extends Component
      */
     public function saveBilling(): Redirector|RedirectResponse
     {
-        $validatedFields = Validator::make($this->getValidationData(), $this->billingRules())
-            ->validate();
+        // maak validatie
+        $validated = Validator::make($this->getValidationData(), $this->billingRules())->validate();
 
         try {
-            // Split street address en huisnummer
-            $parts = explode(' ', $validatedFields['street_address']);
-            if (count($parts) < 2) {
+            $userId = auth()->id();
+
+            // Split street_address in 2 delen: straat en huisnummer
+            $addressParts = preg_split('/\s+/', trim($validated['street_address'])) ?: [];
+            if (count($addressParts) < 2) {
                 session()->flash('error', 'Enter a valid street address.');
                 return redirect()->back();
             }
 
-            $houseNr = array_pop($parts);
-            $street = implode(' ', $parts);
+            $houseNumber = array_pop($addressParts);
+            $street = implode(' ', $addressParts);
 
-            // Data aanpassen naar DB-kolommen
-            $addressData = [
-                'user_id' => auth()->id(),
+            // zet attributen voor opslaan naar db
+            $addressAttributes = [
                 'street' => $street,
-                'house_nr' => $houseNr,
-                'zipcode' => $validatedFields['postal_code'],
-                'city' => $validatedFields['city'],
-                'state' => $validatedFields['state'],
-                'country' => $validatedFields['country'],
+                'house_nr' => $houseNumber,
+                'zipcode' => $validated['postal_code'],
+                'city' => $validated['city'],
+                'state' => $validated['state'],
+                'country' => $validated['country'],
             ];
 
-            // Update of create
-            $address = Address::updateOrCreate(
-                ['user_id' => auth()->id()],
-                $addressData
-            );
+            // sla adres op in db
+            Address::updateOrCreate(['user_id' => $userId], $addressAttributes);
 
-            $user = Auth::user();
-
+            // kijk of user bewerkt is tijdens het invullen van formulier
+            // ja: zet first_name en last_name bij elkaar voor db opslaan
+            // en zet de attributen, daarna opslaan in db
+            $user = auth()->user();
             if ($user) {
-                $updated = false;
+                $fullName = trim($validated['first_name'] . ' ' . $validated['last_name']);
 
-                $fullName = $validatedFields['first_name'] . ' ' . $validatedFields['last_name'];
+                $userAttributes = [
+                    'name' => $fullName,
+                    'email' => $validated['email'],
+                    'phone_number' => $validated['phone_number'],
+                ];
 
-                if ($user->name !== $fullName) {
-                    $user->name = $fullName;
-                    $updated = true;
-                }
+                $user->fill($userAttributes);
 
-                if ($user->email !== $validatedFields['email']) {
-                    $user->email = $validatedFields['email'];
-                    $updated = true;
-                }
-
-                if ($user->phone_number !== $validatedFields['phone_number']) {
-                    $user->phone_number = $validatedFields['phone_number'];
-                    $updated = true;
-                }
-
-                if ($updated) {
+                if ($user->isDirty()) {
                     $user->save();
                 }
             }
 
-            session([self::SESSION_KEY => $validatedFields]);
+            session([self::SESSION_KEY => $validated]);
 
             return redirect()->route(self::NEXT_ROUTE);
-
         } catch (\Exception $e) {
             \Log::error('Error saving billing address: ' . $e->getMessage(), [
                 'user_id' => auth()->id(),
-                'validated_fields' => $validatedFields ?? null,
-                'trace' => $e->getTraceAsString()
+                'validated_fields' => $validated ?? null,
+                'trace' => $e->getTraceAsString(),
             ]);
+
             session()->flash('error', 'Something went wrong while saving billing address. Try again.');
             return redirect()->back()->withInput();
         }
@@ -172,6 +164,7 @@ class Billing extends Component
      */
     protected function billingRules(): array
     {
+        //validation rules voor billing data
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -199,6 +192,7 @@ class Billing extends Component
      */
     protected function getValidationData(): array
     {
+        // haal validationdata op
         return [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,

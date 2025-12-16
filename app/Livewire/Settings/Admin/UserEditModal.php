@@ -279,6 +279,7 @@ class UserEditModal extends Component
      */
     public function mount(): void
     {
+        // pak alle rollen per id en naam
         $this->availableRoles = Role::query()
             ->orderBy('name')
             ->get(['id', 'name'])
@@ -323,10 +324,13 @@ class UserEditModal extends Component
      */
     public function save(): void
     {
+        // kijk of gebruiker admin is
         $this->authorizeAdmin();
 
+        // pak adress en rollen
         $user = User::query()->with(['address', 'roles'])->findOrFail($this->userId);
 
+        // valideer
         $this->validate($this->rules($user));
 
         $address = $user->address ?? new Address();
@@ -347,9 +351,11 @@ class UserEditModal extends Component
             'country' => $this->country,
         ]);
 
+        // sla adres op in db
         $address->save();
         $user->address()->associate($address);
 
+        // sla avatar goed op
         if ($this->avatarFile) {
             $userId = $user->id;
             $randomString = Str::random(8);
@@ -370,6 +376,7 @@ class UserEditModal extends Component
             $user->syncRoles([$this->role]);
         }
 
+        // dispatch event voor updaten tabel en user update
         $this->dispatch('pg:eventRefresh-user-table-nkoz16-table');
         $this->dispatch('admin-user-updated');
 
@@ -389,6 +396,7 @@ class UserEditModal extends Component
      */
     protected function rules(User $user): array
     {
+        // validatie regels
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -418,6 +426,7 @@ class UserEditModal extends Component
      */
     protected function loadUser(int $userId): void
     {
+        // laad gebruiker
         $user = User::query()->with(['address', 'roles'])->findOrFail($userId);
 
         if ($user->hasRole('super-admin')) {

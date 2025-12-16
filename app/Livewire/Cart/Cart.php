@@ -29,9 +29,15 @@ class Cart extends Component
     public function removeFromCart(int $productId): void
     {
         $cart = $this->cart;
+
         unset($cart[$productId]);
+
         $this->cart = $cart;
+
+        // stuur dispatch
         $this->dispatch('cartUpdated');
+
+        // update sessie met lege cart
         session()->put('cart', $cart);
     }
 
@@ -53,6 +59,11 @@ class Cart extends Component
         }
 
         $this->cart[$productId]['quantity'] = $quantity;
+
+        // stuur dispatch
+        $this->dispatch('cartUpdated');
+
+        // update sessie met nieuwe cart
         session()->put('cart', $this->cart);
     }
 

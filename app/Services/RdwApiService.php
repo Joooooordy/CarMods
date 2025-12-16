@@ -8,6 +8,8 @@ class RdwApiService
 {
     protected string $baseUrl = 'https://opendata.rdw.nl/resource/m9d7-ebf2.json';
 
+    protected string $fueltypeUrl = 'https://opendata.rdw.nl/resource/8ys7-d773.json';
+
     /**
      * Fetches license plate data from an external API based on the provided license plate string.
      *
@@ -16,15 +18,20 @@ class RdwApiService
      */
     public function getLicensePlateData(string $kenteken): ?array
     {
-        $response = Http::get($this->baseUrl, [
-            'kenteken' => strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $kenteken)),
-        ]);
+        try {
+            // krijg response van api
+            $response = Http::get($this->baseUrl, [
+                'kenteken' => strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $kenteken)),
+            ]);
 
-        if ($response->successful() && !empty($response[0])) {
-            return $response[0];
+            if ($response->successful() && !empty($response[0])) {
+                return $response[0];
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            return null;
         }
-
-        return null;
     }
 
     /**
@@ -35,15 +42,20 @@ class RdwApiService
      */
     public function getFuelType(string $kenteken): ?string
     {
-        $response = Http::get('https://opendata.rdw.nl/resource/8ys7-d773.json', [
-            'kenteken' => strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $kenteken)),
-        ]);
+        try {
+            // krijg response van api 
+            $response = Http::get($this->fueltypeUrl, [
+                'kenteken' => strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $kenteken)),
+            ]);
 
-        if ($response->successful() && !empty($response[0])) {
-            return $response[0]['brandstof_omschrijving'] ?? null;
+            if ($response->successful() && !empty($response[0])) {
+                return $response[0]['brandstof_omschrijving'] ?? null;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            return null;
         }
-
-        return null;
     }
 
 }

@@ -13,6 +13,7 @@ class UserOrder extends Component
     {
         $user = auth()->user();
 
+        // pak alle orders op datum van maken per user
         return $user->orders()->orderBy('created_at', 'desc')->get();
     }
 

@@ -37,13 +37,16 @@ class Users extends Component
 
     public function delete(int $userId): void
     {
+        // pak gebruiker aan het id en verwijder
         User::findOrFail($userId)->delete();
         $this->resetForm();
     }
 
     public function editUser(int $userId)
     {
+        // pak user per id
         $user = User::findOrFail($userId);
+
         $this->userId = $userId;
         $this->name = $user->name;
         $this->birthdate = $user->birthdate;
@@ -58,14 +61,17 @@ class Users extends Component
 
     public function save(): void
     {
+        // valideer
         $data = $this->validate();
 
+        // sla avator op
         if ($this->avatar instanceof UploadedFile) {
             $data['avatar'] = saveFileSafely($this->avatar, 'user', $this->userId);
         } elseif ($this->isEditing) {
             unset($data['avatar']);
         }
 
+        // sla user op
         User::updateOrCreate(
             ['id' => $this->userId],
             $data

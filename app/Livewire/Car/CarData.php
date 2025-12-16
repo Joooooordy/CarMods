@@ -45,10 +45,12 @@ class CarData extends Component
         $this->licensePlate = $kenteken->licenseplate;
 
         $this->formattedLicensePlate = $kenteken->formatted_licenseplate ?? $kenteken->licenseplate;
+
         $this->vehicleData = $kenteken->data ?? [];
 
         $this->formattedFields = [];
 
+        // loop door vehicledata en kijk of veld geskipt moet worden
         foreach ($this->vehicleData as $key => $value) {
             if ($this->shouldSkipField($key)) {
                 continue;
@@ -92,14 +94,17 @@ class CarData extends Component
             'licensePlate' => 'required|string|min:6|max:8',
         ]);
 
+        // niet ingelogd: redirect naar login pagina
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
+        // sla kenteken op in db
         $kenteken = Kenteken::firstOrCreate(
             ['licenseplate' => strtoupper($this->licensePlate)]
         );
 
+        // sla vehicle op in db
         $vehicle = VehicleModel::firstOrCreate([
             'user_id' => auth()->id(),
             'licenseplate_id' => $kenteken->id,
